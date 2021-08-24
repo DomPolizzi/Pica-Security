@@ -35,6 +35,9 @@ https://docs.docker.com/engine/install/ubuntu/
 PiHole Docker image is also located on the PiHole site
 https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker
 
+"CLOUD" IDE that is hosted in a webbrowser (essentially cloud9.io but hosted on a LAN and not owneded by amazon):
+https://github.com/cdr/code-server
+
 The Snort IDS/IPS is configured and operational:
 https://upcloud.com/community/tutorials/install-snort-ubuntu/
 
