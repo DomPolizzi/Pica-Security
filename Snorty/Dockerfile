@@ -22,7 +22,7 @@ RUN apt-get update && \
         autoconf \ 
         libtool \
         python-setuptools \
-        python-pip \
+        #python-pip \
         python-dev \
         wget \
         build-essential \
@@ -32,7 +32,10 @@ RUN apt-get update && \
         libpcre3-dev \
         libdumbnet-dev \
         zlib1g-dev \
-        iptables-dev \
+        #iptables-dev \
+        libxtables-dev \
+        libip6tc-dev \
+        libip4tc-dev \
         libnetfilter-queue1 \
         tcpdump \
         unzip \
