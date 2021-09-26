@@ -7,7 +7,7 @@
 # I have also added comments to make it easier for anyone to reverse engineer/modify.
 
 #Pull an OS
-FROM ubuntu:20.04.4
+FROM ubuntu:20.04
 
 #Update OS and Pull packages
 RUN apt-get update && \
