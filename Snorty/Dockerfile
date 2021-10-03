@@ -11,6 +11,8 @@ FROM ubuntu:20.04
 
 #Update OS and Pull packages
 RUN apt-get update && \
+    apt-get install -y tzdata && \
+    dpkg-reconfigure -f noninteractive tzdata && \
     apt-get install -y \
         gcc \
         libluajit-5.1-dev \
@@ -22,7 +24,7 @@ RUN apt-get update && \
         autoconf \ 
         libtool \
         python-setuptools \
-        #python-pip \
+        python3-pip \
         python-dev \
         wget \
         build-essential \
