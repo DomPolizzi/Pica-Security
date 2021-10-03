@@ -52,7 +52,7 @@ ENV DAQ_VERSION 2.0.7
 RUN mkdir ~/snort_src \
     && cd ~/snort_src  \
     && wget https://www.snort.org/downloads/archive/snort/daq-${DAQ_VERSION}.tar.gz \
-    && tar -xvfz daq-${DAQ_VERSION}.tar.gz \
+    && tar xvfz daq-${DAQ_VERSION}.tar.gz \
     && cd daq-${DAQ_VERSION} \
     # The latest version requires an additional step to auto reconfigure DAQ before running the config.
     && autoreconf -f -i \
@@ -63,7 +63,7 @@ ENV SNORT_VERSION 2.9.18.1
 #Pull Snort and Install
 RUN cd ~/snort_src \
     && wget https://www.snort.org/downloads/archive/snort/snort-${SNORT_VERSION}.tar.gz \
-    && tar -xvfz snort-${SNORT_VERSION}.tar.gz \
+    && tar xvfz snort-${SNORT_VERSION}.tar.gz \
     && cd snort-${SNORT_VERSION} \
     && ./configure; make; make install
 
@@ -86,17 +86,17 @@ RUN ln -s /usr/local/bin/snort /usr/sbin/snort \
     && touch /etc/snort/rules/white_list.rules \
     && touch /etc/snort/rules/black_list.rules \
     && touch /etc/snort/rules/local.rules \
-    && cp ~/snort_src/snort-2.9.16/etc/*.conf* /etc/snort \
-    && cp ~/snort_src/snort-2.9.16/etc/*.map /etc/snort 
+    && cp ~/snort_src/snort-${SNORT_VERSION}/etc/*.conf /etc/snort \
+    && cp ~/snort_src/snort-${SNORT_VERSION}/etc/*.map /etc/snort 
 
 # Configuration Setup, now to pull community rules. this is Optional and you can comment this section out if you wish
 RUN wget https://www.snort.org/rules/community -O ~/community.tar.gz \
-    && tar -xvf ~/community.tar.gz -C ~ \
+    && tar xvf ~/community.tar.gz -C ~ \
     && cp ~/community-rules/* /etc/snort/rules \
-    && sudo sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
+    && sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
 
 # Time for Cleanup! 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+RUN apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     ~/snort_src/snort-${SNORT_VERSION}.tar.gz ~/snort_src/daq-${DAQ_VERSION}.tar.gz 
 
 ENV NETWORK_INTERFACE eth0
