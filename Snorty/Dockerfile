@@ -1,7 +1,7 @@
 # Snort for Docker
 
 #Special Thanks:
-# To John-Lin for the Template idea and SnortUnsock(https://github.com/John-Lin)
+# To John-Lin for the Template idea (https://github.com/John-Lin)
 # Janne Ruostemaa for the Snort Install guide (https://upcloud.com/community/tutorials/install-snort-ubuntu/ )
 
 # I have also added comments to make it easier for anyone to reverse engineer/modify.
@@ -14,34 +14,33 @@ RUN apt-get update && \
     apt-get install -y tzdata && \
     dpkg-reconfigure -f noninteractive tzdata && \
     apt-get install -y \
-        gcc \
-        libluajit-5.1-dev \
-        openssl \ 
-        libssl-dev \
-        libnghttp2-dev \ 
-        libdumbnet-dev \
-        libdnet \ 
-        autoconf \ 
-        libtool \
-        python-setuptools \
-        python3-pip \
-        python-dev \
-        wget \
-        build-essential \
-        bison \
-        flex \
-        libpcap-dev \
-        libpcre3-dev \
-        libdumbnet-dev \
-        zlib1g-dev \
-        #iptables-dev \
-        libxtables-dev \
-        libip6tc-dev \
-        libip4tc-dev \
-        libnetfilter-queue1 \
-        tcpdump \
-        unzip \
-        vim && pip install -U pip dpkt snortunsock
+    gcc \
+    libluajit-5.1-dev \
+    openssl \ 
+    libssl-dev \
+    libnghttp2-dev \ 
+    libdumbnet-dev \
+    libdnet \ 
+    autoconf \ 
+    libtool \
+    python-setuptools \
+    python3-pip \
+    python-dev \
+    wget \
+    build-essential \
+    bison \
+    flex \
+    libpcap-dev \
+    libpcre3-dev \
+    libdumbnet-dev \
+    zlib1g-dev \
+    libxtables-dev \
+    libip6tc-dev \
+    libip4tc-dev \
+    libnetfilter-queue1 \
+    tcpdump \
+    unzip \
+    vim
 
 # Define Directory
 WORKDIR /opt
@@ -70,12 +69,6 @@ RUN cd ~/snort_src \
 # Configuring Snort to run in NIDS mode
 RUN ldconfig 
 
-
-# snortunsock - John-Lins
-#RUN wget --no-check-certificate \
- #       https://github.com/John-Lin/snortunsock/archive/master.zip \
-  #  && unzip master.zip
-
 # create a symbolic link to /usr/sbin/snort. 
 RUN ln -s /usr/local/bin/snort /usr/sbin/snort \
     #create folder structure to house the Snort configuration
@@ -101,5 +94,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 
 #ENV NETWORK_INTERFACE eth0
 # Validate an installation
-# snort -T -i eth0 -c /etc/snort/etc/snort.conf
 CMD ["snort", "-V"]
