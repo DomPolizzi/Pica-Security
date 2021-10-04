@@ -48,7 +48,7 @@ WORKDIR /opt
 
 #Define DAQ Variable (Data Acquisition library), latest is 2.0.7 https://www.snort.org/downloads/
 ENV DAQ_VERSION 2.0.7
-#Ptzdata ull DAQ and Install
+#Pull DAQ and Install
 RUN mkdir ~/snort_src \
     && cd ~/snort_src  \
     && wget https://www.snort.org/downloads/archive/snort/daq-${DAQ_VERSION}.tar.gz \
@@ -72,9 +72,9 @@ RUN ldconfig
 
 
 # snortunsock - John-Lins
-#RUN wget --no-check-certificate \
- #       https://github.com/John-Lin/snortunsock/archive/master.zip \
-  #  && unzip master.zip
+RUN wget --no-check-certificate \
+        https://github.com/John-Lin/snortunsock/archive/master.zip \
+    && unzip master.zip
 
 # create a symbolic link to /usr/sbin/snort. 
 RUN ln -s /usr/local/bin/snort /usr/sbin/snort \
@@ -86,20 +86,20 @@ RUN ln -s /usr/local/bin/snort /usr/sbin/snort \
     && touch /etc/snort/rules/white_list.rules \
     && touch /etc/snort/rules/black_list.rules \
     && touch /etc/snort/rules/local.rules \
-    && cp ~/snort_src/snort-${SNORT_VERSION}/etc/*.conf /etc/snort \
-    && cp ~/snort_src/snort-${SNORT_VERSION}/etc/*.map /etc/snort 
+    && cp ~/snort_src//etc/*.conf /etc/snort \
+    && cp ~/snort_src/snort-2.9.16/etc/*.map /etc/snort 
 
 # Configuration Setup, now to pull community rules. this is Optional and you can comment this section out if you wish
 RUN wget https://www.snort.org/rules/community -O ~/community.tar.gz \
-    && tar xvf ~/community.tar.gz -C ~ \
+    && tar -xvf ~/community.tar.gz -C ~ \
     && cp ~/community-rules/* /etc/snort/rules \
-    && sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
+    && sudo sed -i 's/include \$RULE\_PATH/#include \$RULE\_PATH/' /etc/snort/snort.conf
 
 # Time for Cleanup! 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     ~/snort_src/snort-${SNORT_VERSION}.tar.gz ~/snort_src/daq-${DAQ_VERSION}.tar.gz 
 
-#ENV NETWORK_INTERFACE eth0
+ENV NETWORK_INTERFACE eth0
 # Validate an installation
 # snort -T -i eth0 -c /etc/snort/etc/snort.conf
-CMD ["snort", "-V"]
+CMD ["snort", "-T", "-i", "echo ${NETWORK_INTERFACE}", "-c", "/etc/snort/etc/snort.conf"]
